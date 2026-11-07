@@ -56,13 +56,16 @@ async function main() {
       throw new Error("no choices in response");
     }
 
-    messages.push(response.message)
+    const message = response.choices[0].message;
 
-    if (!response.message.tool_calls) {
-      console.log(response.message.content[0])
+    if (!message.tool_calls || message.tool_calls == 0) {
+      console.log(message.content)
+      break;
     }
 
-    const tools = response.message.tool_calls
+    messages.push(message)
+
+    const tools = message.tool_calls
 
     for (let i = 0; i < tools.length; i++) {
 
@@ -71,7 +74,12 @@ async function main() {
           const tool = response.choices[0].message.tool_calls[0]
           const path2 = JSON.parse(tool.function.arguments)
           const fileContent = fs.readFileSync(path2.file_path, { encoding: 'utf8' })
-          console.log(fileContent);
+          messages.push({
+            role: "tool",
+            tool_call_id: tools[i].id,
+            content: fileContent
+          })
+          
           break;
       }
 
