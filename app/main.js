@@ -68,10 +68,10 @@ async function main() {
     const tools = message.tool_calls
 
     for (let i = 0; i < tools.length; i++) {
+      const tool = tools[i]
 
-      switch (tool ? tool[i].function.name : null) {
+      switch (tool ? tool.function.name : null) {
         case "Read":
-          const tool = response.choices[i].message.tool_calls[i]
           const path2 = JSON.parse(tool.function.arguments)
           const fileContent = fs.readFileSync(path2.file_path, { encoding: 'utf8' })
           messages.push({
