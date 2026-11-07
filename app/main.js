@@ -50,7 +50,7 @@ async function main() {
 
   const tool = response.choices[0].message.tool_calls
 
-  switch (tool ? tool[0].function.name : "") {
+  switch (tool ? tool[0].function.name : null) {
 
     case "Read":
       const tool = response.choices[0].message.tool_calls[0]
