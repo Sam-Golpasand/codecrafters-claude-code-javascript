@@ -48,9 +48,9 @@ async function main() {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   console.error("Logs from your program will appear here!");
 
-  const tool = response.choices[0].message.tool_calls[0]
+  const tool = response.choices[0].message.tool_calls
 
-  switch (tool.function.name) {
+  switch (tool[0].function.name) {
 
     case "Read":
       const tool = response.choices[0].message.tool_calls[0]
