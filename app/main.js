@@ -19,7 +19,7 @@ async function main() {
     baseURL: baseURL,
   });
 
-  const tools = [{
+  const tools_available = [{
     type: "function",
     function: {
       name: "Read",
@@ -49,7 +49,7 @@ async function main() {
     const response = await client.chat.completions.create({
       model: "anthropic/claude-haiku-4.5",
       messages: [messages],
-      tools: tools
+      tools: tools_available
     });
 
     if (!response.choices || response.choices.length === 0) {
