@@ -162,7 +162,7 @@ async function main() {
           console.log(error);
           return error
         }
-      return stdout, stderr
+      return stdout + stderr
       });
 
 
