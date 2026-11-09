@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
+import { type } from "os";
 
   const tools_available = [{
     type: "function",
@@ -15,6 +16,22 @@ import fs, { Utf8Stream } from "fs"
           }
         },
         required: ["file_path"]
+      },
+      name: "Write",
+      description: "Write content to a file",
+      parameters: {
+        type: "object",
+        required: ["file_path", "content"],
+        properties: {
+          file_path: {
+            type: "string",
+            description: "The path of the file to write to"
+          },
+          content: {
+            type: "string",
+            description: "The content to write to the file"
+          }
+        }
       }
     }
   }]
@@ -45,8 +62,6 @@ async function main() {
   const messages = [{ role: "user", content: prompt }]
 
 
-
-
   while(true) {
     const response = await client.chat.completions.create({
       model: "anthropic/claude-haiku-4.5",
@@ -72,7 +87,6 @@ async function main() {
     for (let i = 0; i < tools.length; i++) {
       const tool = tools[i]
       runTool(tool, tool.id);
-
     }
   }
 
@@ -86,8 +100,13 @@ async function main() {
             tool_call_id: toolId,
             content: fileContent
           })
-
           break;
+        case "Write":
+          write(tool.function.arguments);
+          messages.push({
+            role: "tool",
+            tool_call_id: toolId,
+          })
       }
   }
 
@@ -95,6 +114,12 @@ async function main() {
     const path2 = JSON.parse(path)
     const fileContent = fs.readFileSync(path2.file_path, { encoding: 'utf8' })
     return fileContent
+  }
+
+  function write(path, content) {
+    const path = JSON.parse(path)
+    const parsedContent = JSON.parce(content)
+    fs.writeFileSync(path.file_path, parsedContent, { encoding: "utf8"})
   }
 
 }
