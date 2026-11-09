@@ -154,10 +154,15 @@ async function main() {
   }
 
   function runBash(args) {
-    const {command} = JSON.parse(args)
-    
-    const returnStdout = exec(command) 
-    return returnStdout
+
+    try {
+      const {command} = JSON.parse(args)
+      const returnStdout = exec(command);
+      return returnStdout
+    } catch (e) {
+      return e
+    } 
+
   }
 
 }
