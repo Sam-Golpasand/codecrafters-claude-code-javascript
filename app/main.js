@@ -110,18 +110,18 @@ async function main() {
 
     for (let i = 0; i < tools.length; i++) {
       const tool = tools[i]
-      runTool(tool, tool.id);
+      runTool(tool);
     }
   }
 
 
-  function runTool(tool, toolId) {
+  function runTool(tool) {
     switch (tool ? tool.function.name : null) {
       case "Read":
         const fileContent = read(tool.function.arguments)
         messages.push({
           role: "tool",
-          tool_call_id: toolId,
+          tool_call_id: tool.id,
           content: fileContent
         })
         break;
@@ -129,7 +129,7 @@ async function main() {
         const writeMessage = write(tool.function.arguments);
         messages.push({
           role: "tool",
-          tool_call_id: toolId,
+          tool_call_id: tool.id,
           content: writeMessage
         })
         break;
@@ -137,7 +137,7 @@ async function main() {
         const bashMessage = runBash(tool.function.arguments);
         messages.push({
           role: "tool",
-          tool_call_id: toolId,
+          tool_call_id: tool.id,
           content: bashMessage
         })
     }
