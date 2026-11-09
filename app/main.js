@@ -144,8 +144,8 @@ async function main() {
   }
 
   function read(args) {
-    const { path } = JSON.parse(args)
-    const fileContent = fs.readFileSync(path, { encoding: 'utf8' })
+    const { file_path } = JSON.parse(args)
+    const fileContent = fs.readFileSync(file_path, { encoding: 'utf8' })
     return fileContent
   }
 
