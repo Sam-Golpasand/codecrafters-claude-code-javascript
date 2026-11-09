@@ -1,6 +1,5 @@
 import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
-import { type } from "os";
 
 const tools_available = [{
   type: "function",
@@ -111,6 +110,7 @@ async function main() {
         messages.push({
           role: "tool",
           tool_call_id: toolId,
+          content: 0
         })
     }
   }
