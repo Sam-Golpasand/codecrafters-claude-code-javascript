@@ -106,7 +106,7 @@ async function main() {
         })
         break;
       case "Write":
-        const writeMessage = write(tool.function.arguments, tool.function.arguments.content);
+        const writeMessage = write(tool.function.arguments);
         messages.push({
           role: "tool",
           tool_call_id: toolId,
@@ -115,14 +115,15 @@ async function main() {
     }
   }
 
-  function read(path) {
-    const path2 = JSON.parse(path)
+  function read(args) {
+    const path2 = JSON.parse(args)
     const fileContent = fs.readFileSync(path2.file_path, { encoding: 'utf8' })
     return fileContent
   }
 
-  function write(path, content) {
-    const path2 = JSON.parse(path)
+  function write(args) {
+    const path2 = JSON.parse(args.file_path)
+    const content2 = JSON.parse(args.content)
     fs.writeFileSync(path2.file_path, content, { encoding: "utf8" })
     return "Succesfully created the file"
   }
