@@ -159,7 +159,7 @@ async function main() {
 
       const { command } = JSON.parse(args)
       try {
-        execSync(command, { encoding: "utf-8"})
+        execSync(command, { encoding: "utf-8", stdio: "pipe"})
       } catch (e) {
         return (e.stdout ?? "") + (e.stderr ?? "") || e.message
       }
