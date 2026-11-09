@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
 import { stdout } from "process";
-import { ChildProcess } from "child_process";
+import { exec } from 'node:child_process';
 
 const tools_available = [{
   type: "function",
@@ -156,7 +156,7 @@ async function main() {
   function runBash(args) {
     const {command} = JSON.parse(args)
     
-    const returnStdout = child_process.exec(command) 
+    const returnStdout = exec(command) 
     return returnStdout
   }
 
