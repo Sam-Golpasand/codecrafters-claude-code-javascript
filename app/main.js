@@ -123,7 +123,7 @@ async function main() {
 
   function write(path, content) {
     const path2 = JSON.parse(path)
-    fs.writeFileSync(path2.file_path, content, { encoding: "utf8" })
+    fs.writeFileSync(path2, content, { encoding: "utf8" })
     return "Succesfully created the file"
   }
 
