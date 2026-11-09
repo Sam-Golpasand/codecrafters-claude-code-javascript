@@ -158,11 +158,9 @@ async function main() {
   function runBash(args) {
 
       const { command } = JSON.parse(args)
-      try {
-        execSync(command, { encoding: "utf-8", stdio: "pipe"})
-      } catch (e) {
-        return (e.stdout ?? "") + (e.stderr ?? "") || e.message
-      }
+      
+      const toolsResult = execSync(command, { encoding: "utf-8", stdio: "pipe"})
+      return toolsResult
 
 
   }
