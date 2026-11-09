@@ -150,19 +150,21 @@ async function main() {
   }
 
   function write(args) {
-    const { file_path, content } = JSON.parse(args)
+    const {file_path, content} = JSON.parse(args)
     fs.writeFileSync(file_path, content, { encoding: "utf8" })
     return "Succesfully created the file"
   }
 
   function runBash(args) {
-    const { command } = JSON.parse(args)
-    try {
-      return execSync(command, { encoding: "utf8", stdio: "pipe" })
-    } catch (error) {
-      // non-zero exit codes throw, but the model still needs to see the output
-      return (error.stdout ?? "") + (error.stderr ?? "") || error.message
-    }
+
+      const { command } = JSON.parse(args)
+      try {
+        execSync(command, { encoding: "utf-8"})
+      } catch (e) {
+        return (e.stdout ?? "") + (e.stderr ?? "") || e.message
+      }
+
+
   }
 
 }
