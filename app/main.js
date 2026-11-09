@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
 import { stdout } from "process";
 import { exec } from 'node:child_process';
+import { stderr } from "node:process";
 
 const tools_available = [{
   type: "function",
@@ -155,13 +156,9 @@ async function main() {
 
   function runBash(args) {
 
-    try {
-      const {command} = JSON.parse(args)
-      const returnStdout = exec(command);
-      return returnStdout
-    } catch (e) {
-      return e
-    } 
+      const { command } = JSON.parse(args)
+      exec(command, (error, stdout, stderr));
+      return stdout, stderr
 
   }
 
