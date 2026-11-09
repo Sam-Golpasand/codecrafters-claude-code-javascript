@@ -77,7 +77,7 @@ async function main() {
   }
 
 
-  function runTool(toolName) {
+  function runTool(tool) {
       switch (tool ? tool.function.name : null) {
         case "Read":
           read(tool.function.arguments)
