@@ -156,7 +156,7 @@ async function main() {
   function runBash(args) {
     const {command} = JSON.parse(args)
     
-    const returnStdout = ChildProcess.exec(command) 
+    const returnStdout = child_process.exec(command) 
     return returnStdout
   }
 
