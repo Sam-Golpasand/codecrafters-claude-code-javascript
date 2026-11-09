@@ -132,6 +132,7 @@ async function main() {
           tool_call_id: toolId,
           content: writeMessage
         })
+        break;
       case "Bash":
         const bashMessage = runBash(tool.function.arguments);
         messages.push({
