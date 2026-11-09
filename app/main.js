@@ -71,19 +71,19 @@ async function main() {
 
     for (let i = 0; i < tools.length; i++) {
       const tool = tools[i]
-      runTool(tool);
+      runTool(tool, tool.id);
 
     }
   }
 
 
-  function runTool(tool) {
+  function runTool(tool, toolId) {
       switch (tool ? tool.function.name : null) {
         case "Read":
           read(tool.function.arguments)
           messages.push({
             role: "tool",
-            tool_call_id: tools[i].id,
+            tool_call_id: toolId,
             content: fileContent
           })
 
