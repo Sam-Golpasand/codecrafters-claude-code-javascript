@@ -80,7 +80,7 @@ async function main() {
   function runTool(tool, toolId) {
       switch (tool ? tool.function.name : null) {
         case "Read":
-          read(tool.function.arguments)
+          const fileContent = read(tool.function.arguments)
           messages.push({
             role: "tool",
             tool_call_id: toolId,
