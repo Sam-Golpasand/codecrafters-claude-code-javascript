@@ -102,7 +102,7 @@ async function main() {
           })
           break;
         case "Write":
-          write(tool.function.arguments);
+          write(tool.function.arguments[0], tool.function.arguments[1]);
           messages.push({
             role: "tool",
             tool_call_id: toolId,
@@ -118,7 +118,7 @@ async function main() {
 
   function write(path, content) {
     const path2 = JSON.parse(path)
-    const parsedContent = JSON.parce(content)
+    const parsedContent = JSON.parse(content)
     fs.writeFileSync(path2.file_path, parsedContent, { encoding: "utf8"})
   }
 
