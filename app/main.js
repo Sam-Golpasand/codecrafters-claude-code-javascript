@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
+import { stdout } from "process";
+import { ChildProcess } from "child_process";
 
 const tools_available = [{
   type: "function",
@@ -34,6 +36,23 @@ const tools_available = [{
         content: {
           type: "string",
           description: "The content to write to the file"
+        }
+      }
+    }
+  }
+},
+{
+  type: "function",
+  function: {
+    name: "Bash",
+    description: "Execute a shell command",
+    parameters: {
+      type: "object",
+      required: ["command"],
+      properties: {
+        command: {
+          type: "string",
+          description: "The command to execute"
         }
       }
     }
@@ -112,12 +131,19 @@ async function main() {
           tool_call_id: toolId,
           content: writeMessage
         })
+      case "Bash":
+        const bashMessage = runBash(tool.function.arguments);
+        messages.push({
+          role: "tool",
+          tool_call_id: toolId,
+          content: bashMessage
+        })
     }
   }
 
   function read(args) {
-    const path2 = JSON.parse(args)
-    const fileContent = fs.readFileSync(path2.file_path, { encoding: 'utf8' })
+    const { path } = JSON.parse(args)
+    const fileContent = fs.readFileSync(path, { encoding: 'utf8' })
     return fileContent
   }
 
@@ -125,6 +151,13 @@ async function main() {
     const {file_path, content} = JSON.parse(args)
     fs.writeFileSync(file_path, content, { encoding: "utf8" })
     return "Succesfully created the file"
+  }
+
+  function runBash(args) {
+    const {command} = JSON.parse(args)
+    
+    returnStdout = exec(command) 
+    return returnStdout
   }
 
 }
