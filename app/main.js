@@ -107,7 +107,7 @@ async function main() {
         })
         break;
       case "Write":
-        write(tool.function.arguments[0], tool.function.arguments[1]);
+        write(tool.function.arguments.file_path, tool.function.arguments.content);
         messages.push({
           role: "tool",
           tool_call_id: toolId,
