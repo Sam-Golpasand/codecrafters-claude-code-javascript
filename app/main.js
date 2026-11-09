@@ -106,11 +106,11 @@ async function main() {
         })
         break;
       case "Write":
-        write(tool.function.arguments.file_path, tool.function.arguments.content);
+        const writeMessage = write(tool.function.arguments.file_path, tool.function.arguments.content);
         messages.push({
           role: "tool",
           tool_call_id: toolId,
-          content: 0
+          content: writeMessage
         })
     }
   }
@@ -124,6 +124,7 @@ async function main() {
   function write(path, content) {
     const path2 = JSON.parse(path)
     fs.writeFileSync(path2.file_path, content, { encoding: "utf8" })
+    return "Succesfully created the file"
   }
 
 }
