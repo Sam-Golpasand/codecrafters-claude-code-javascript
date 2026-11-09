@@ -122,9 +122,8 @@ async function main() {
   }
 
   function write(args) {
-    const path2 = JSON.parse(args.file_path)
-    const content2 = JSON.parse(args.content)
-    fs.writeFileSync(path2.file_path, content, { encoding: "utf8" })
+    const {file_path, content} = JSON.parse(args)
+    fs.writeFileSync(file_path, content, { encoding: "utf8" })
     return "Succesfully created the file"
   }
 
