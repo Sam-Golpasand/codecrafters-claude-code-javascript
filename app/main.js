@@ -2,39 +2,60 @@ import OpenAI from "openai";
 import fs, { Utf8Stream } from "fs"
 import { type } from "os";
 
-  const tools_available = [{
-    type: "function",
-    function: {
-      name: "Read",
-      description: "Read and return the contents of a file",
-      parameters: {
-        type: "object",
-        properties: {
-          file_path: {
-            type: "string",
-            description: "The path to the file to read"
-          }
-        },
-        required: ["file_path"]
+const tools_available = [{
+  type: "function",
+  function: {
+    name: "Read",
+    description: "Read and return the contents of a file",
+    parameters: {
+      type: "object",
+      properties: {
+        file_path: {
+          type: "string",
+          description: "The path to the file to read"
+        }
       },
-      name: "Write",
-      description: "Write content to a file",
-      parameters: {
-        type: "object",
-        required: ["file_path", "content"],
-        properties: {
-          file_path: {
-            type: "string",
-            description: "The path of the file to write to"
-          },
-          content: {
-            type: "string",
-            description: "The content to write to the file"
-          }
+      required: ["file_path"]
+    },
+    name: "Write",
+    description: "Write content to a file",
+    parameters: {
+      type: "object",
+      required: ["file_path", "content"],
+      properties: {
+        file_path: {
+          type: "string",
+          description: "The path of the file to write to"
+        },
+        content: {
+          type: "string",
+          description: "The content to write to the file"
         }
       }
     }
-  }]
+  }
+},
+{
+  type: "function",
+  function: {
+    name: "Write",
+    description: "Write content to a file",
+    parameters: {
+      type: "object",
+      required: ["file_path", "content"],
+      properties: {
+        file_path: {
+          type: "string",
+          description: "The path of the file to write to"
+        },
+        content: {
+          type: "string",
+          description: "The content to write to the file"
+        }
+      }
+    }
+  }
+}]
 
 
 async function main() {
@@ -62,7 +83,7 @@ async function main() {
   const messages = [{ role: "user", content: prompt }]
 
 
-  while(true) {
+  while (true) {
     const response = await client.chat.completions.create({
       model: "anthropic/claude-haiku-4.5",
       messages: messages,
@@ -92,22 +113,22 @@ async function main() {
 
 
   function runTool(tool, toolId) {
-      switch (tool ? tool.function.name : null) {
-        case "Read":
-          const fileContent = read(tool.function.arguments)
-          messages.push({
-            role: "tool",
-            tool_call_id: toolId,
-            content: fileContent
-          })
-          break;
-        case "Write":
-          write(tool.function.arguments[0], tool.function.arguments[1]);
-          messages.push({
-            role: "tool",
-            tool_call_id: toolId,
-          })
-      }
+    switch (tool ? tool.function.name : null) {
+      case "Read":
+        const fileContent = read(tool.function.arguments)
+        messages.push({
+          role: "tool",
+          tool_call_id: toolId,
+          content: fileContent
+        })
+        break;
+      case "Write":
+        write(tool.function.arguments[0], tool.function.arguments[1]);
+        messages.push({
+          role: "tool",
+          tool_call_id: toolId,
+        })
+    }
   }
 
   function read(path) {
@@ -118,7 +139,7 @@ async function main() {
 
   function write(path, content) {
     const path2 = JSON.parse(path)
-    fs.writeFileSync(path2.file_path, content, { encoding: "utf8"})
+    fs.writeFileSync(path2.file_path, content, { encoding: "utf8" })
   }
 
 }
