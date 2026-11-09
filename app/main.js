@@ -158,7 +158,7 @@ async function main() {
   function runBash(args) {
 
       const { command } = JSON.parse(args)
-      execSync(command, (error, stdout, stderr) => {
+      exec(command, (error, stdout, stderr) => {
         if (error) {
           console.log(error);
           return error
