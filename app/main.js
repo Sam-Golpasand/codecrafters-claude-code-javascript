@@ -117,9 +117,9 @@ async function main() {
   }
 
   function write(path, content) {
-    const path = JSON.parse(path)
+    const path2 = JSON.parse(path)
     const parsedContent = JSON.parce(content)
-    fs.writeFileSync(path.file_path, parsedContent, { encoding: "utf8"})
+    fs.writeFileSync(path2.file_path, parsedContent, { encoding: "utf8"})
   }
 
 }
